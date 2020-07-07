@@ -1,5 +1,4 @@
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ]
-}
+  publicPath: "/shop-app/",
+  transpileDependencies: ["vuetify"],
+};
