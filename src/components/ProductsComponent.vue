@@ -26,10 +26,10 @@
             <v-list-item v-if="totalQuantity == 0"
               >Your cart is empty</v-list-item
             >
-            <v-list-item v-for="product in cart" :key="product.id">
+            <v-list-item v-for="(product, index) in cart" :key="product.id">
               <v-list-item-title>
                 <div class="font-weight-black">
-                  - {{ product.name }} ({{ product.quantity }}x)
+                  {{ index + 1 }}. {{ product.name }} ({{ product.quantity }}x)
                 </div>
                 <div class="text-end">
                   Price:
@@ -39,7 +39,7 @@
               </v-list-item-title>
             </v-list-item>
             <div
-              v-if="totalQuantity !== 0"
+              v-if="totalQuantity"
               class="text-center font-weight-black mt-1"
             >
               Total: <span>{{ getTotal }} DKK</span>
@@ -98,29 +98,14 @@
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
-                            :items="[
-                              'Home delivery',
-                              'Pick-up at restaurant',
-                              'Scheduled time delivery',
-                              'Scheduled time pick-up at restaurant',
-                            ]"
+                            :items="deliveryType"
                             label="Order Type*"
                             required
                           ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-autocomplete
-                            :items="[
-                              'As soon as possible',
-                              '12:00',
-                              '12:30',
-                              '13:00',
-                              '13:30',
-                              '14:00',
-                              '14:30',
-                              '15:00',
-                              '15:30',
-                            ]"
+                            :items="times"
                             label="Order/Delivery Time*"
                             required
                           ></v-autocomplete>
@@ -135,7 +120,7 @@
                       <v-row>
                         <v-col cols="12">
                           <v-select
-                            :items="['Credit Card', 'Mobile Pay']"
+                            :items="paymentType"
                             label="Payment Type*"
                             required
                           ></v-select>
@@ -277,6 +262,24 @@ export default {
         img: "https://i.imgur.com/27uOWcU.jpg",
         quantity: 0,
       },
+    ],
+    times: [
+      "As soon as possible",
+      "12:00",
+      "12:30",
+      "13:00",
+      "13:30",
+      "14:00",
+      "14:30",
+      "15:00",
+      "15:30",
+    ],
+    paymentType: ["Credit Card", "Mobile Pay"],
+    deliveryType: [
+      "Deliver home",
+      "Pick up at restaurant",
+      "Scheduled delivery home",
+      "Scheduled pick up time in restaurant",
     ],
     dialog: false,
   }),
