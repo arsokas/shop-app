@@ -1,28 +1,46 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-app-bar app color="white">
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Name"
+          class="shrink mt-1 hidden-sm-and-down"
+          contain
+          min-width="100"
+          src="https://i.imgur.com/mc0waJE.png"
+          width="100"
+        />
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn text>
+        <span class="mr-2">Shopping cart</span>
+        <v-icon>fas fa-shopping-cart</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <ProductsComponent />
+    </v-main>
+    <FooterComponent />
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ProductsComponent from "./components/ProductsComponent";
+import FooterComponent from "./components/FooterComponent";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  name: "App",
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {
+    ProductsComponent,
+    FooterComponent,
+  },
+
+  data: () => ({
+    //
+  }),
+};
+</script>
