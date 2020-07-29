@@ -22,6 +22,8 @@
 
     <v-main>
       <ProductsComponent />
+      <AddTutorial />
+      <TutorialList />
     </v-main>
     <FooterComponent />
   </v-app>
@@ -30,6 +32,8 @@
 <script>
 import ProductsComponent from "./components/ProductsComponent";
 import FooterComponent from "./components/FooterComponent";
+import AddTutorial from "./components/AddTutorial";
+import TutorialList from "./components/TutorialsList";
 
 export default {
   name: "App",
@@ -37,6 +41,8 @@ export default {
   components: {
     ProductsComponent,
     FooterComponent,
+    AddTutorial,
+    TutorialList,
   },
 
   data: () => ({

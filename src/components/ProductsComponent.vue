@@ -173,11 +173,11 @@ export default {
     times: deliveryTimes,
     paymentType: paymentTypes,
     deliveryType: deliveryTypes,
-    dialog: false
+    dialog: false,
   }),
   computed: {
     cart() {
-      return this.products.filter(product => product.quantity > 0);
+      return this.products.filter((product) => product.quantity > 0);
       //use this also for pizza search
     },
     totalQuantity() {
@@ -190,22 +190,22 @@ export default {
 
     getTotal() {
       return this.products.reduce((a, b) => a + b.price * b.quantity, 0);
-    }
+    },
   },
   methods: {
     addToCard(product) {
       // if i wanna search for some pizzas use .filter,, check if search content is
       // included in pizza's name
-      const productToUpdate = this.products.find(p => product.id === p.id);
+      const productToUpdate = this.products.find((p) => product.id === p.id);
       productToUpdate.quantity++;
     },
     removeFromCart(product) {
-      const productToUpdate = this.products.find(p => product.id === p.id);
+      const productToUpdate = this.products.find((p) => product.id === p.id);
       if (productToUpdate.quantity) {
         productToUpdate.quantity--;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
