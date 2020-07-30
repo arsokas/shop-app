@@ -1,12 +1,12 @@
 <template>
   <!-- <div class="list row"> -->
   <!-- <div class="col-md-8">
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by title" v-model="title" />
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" @click="searchTitle">Search</button>
-        </div>
-      </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search by title" v-model="title" />
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" @click="searchTitle">Search</button>
+            </div>
+          </div>
   </div>-->
   <!-- <div class="col-md-6">
       <h4>Product/Pizza List</h4>
@@ -25,7 +25,7 @@
   <v-container>
     <v-flex d-flex>
       <v-layout wrap>
-        <v-flex md3 v-for="tutorial in tutorials" :key="tutorial.id">
+        <v-flex md3 v-for="tutorial in tutorials" :key="tutorial._id">
           <v-card class="mb-4 mx-auto" max-width="300">
             <v-img
               class="white--text align-end"
@@ -44,8 +44,8 @@
               <v-btn @click="removeFromCart(tutorial)" class="mx-3" dark small color="green">
                 <v-icon>mdi-minus</v-icon>
               </v-btn>
-              <div>{{ tutorial.quantity }}</div>
-              <v-btn @click="addToCard(tutorial)" class="mx-3" dark color="green">
+              <div>{{ tutorial ? tutorial.quantity: 0}}</div>
+              <v-btn @click="addToCart(tutorial)" class="mx-3" dark color="green">
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-card-actions>
@@ -55,33 +55,6 @@
     </v-flex>
     <!-- <v-btn color="success" class="mr-4" @click="removeAllTutorials">Remove All</v-btn> -->
   </v-container>
-
-  <!-- <div class="col-md-6">
-      <div v-if="currentTutorial">
-        <h4>Tutorial</h4>
-        <div>
-          <label>
-            <strong>Title:</strong>
-          </label>
-          {{ currentTutorial.title }}
-        </div>
-        <div>
-          <label>
-            <strong>Description:</strong>
-          </label>
-          {{ currentTutorial.description }}
-        </div>
-        <div>
-          <label>
-            <strong>Status:</strong>
-          </label>
-          {{ currentTutorial.published ? "Published" : "Pending" }}
-        </div>
-
-        <a class="badge badge-warning" :href="'/tutorials/' + currentTutorial.id">Edit</a>
-      </div>
-  </div>-->
-  <!-- </div> -->
 </template>
 
 <script>
@@ -89,28 +62,34 @@ import TutorialDataService from "../services/TutorialDataService";
 
 export default {
   name: "tutorials-list",
+  props: ["tutorials"],
   data() {
     return {
-      tutorials: [],
       currentTutorial: null,
       currentIndex: -1,
       title: "",
     };
   },
   methods: {
-    retrieveTutorials() {
-      TutorialDataService.getAll()
-        .then((response) => {
-          this.tutorials = response.data;
-          console.log(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    // retrieveTutorials() {
+    //   TutorialDataService.getAll()
+    //     .then((response) => {
+    //       this.tutorials = response.data;
+    //       console.log(response.data);
+    //     })
+    //     .catch((e) => {
+    //       console.log(e);
+    //     });
+    // },
+
+    addToCart(tutorial) {
+      this.$emit("addToCart", tutorial);
+    },
+    removeFromCart(tutorial) {
+      this.$emit("removeFromCart", tutorial);
     },
 
     refreshList() {
-      this.retrieveTutorials();
       this.currentTutorial = null;
       this.currentIndex = -1;
     },
@@ -141,9 +120,6 @@ export default {
     //       console.log(e);
     //     });
     // },
-  },
-  mounted() {
-    this.retrieveTutorials();
   },
 };
 </script>

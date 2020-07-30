@@ -24,7 +24,7 @@
           </template>
           <v-list width="300px" style="position:relative;">
             <v-list-item v-if="totalQuantity == 0">Your cart is empty</v-list-item>
-            <v-list-item v-for="tutorial in cart" :key="tutorial.id">
+            <v-list-item v-for="(tutorial, index) in cart" :key="tutorial._id">
               <v-list-item-title>
                 <div
                   class="font-weight-black"
@@ -124,49 +124,21 @@
         </p>
       </v-col>
     </v-row>
-    <TutorialList />
-
-    <!-- <v-flex d-flex>
-      <v-layout wrap>
-        <v-flex md3 v-for="product in products" :key="product.id">
-          <v-card class="mb-4 mx-auto" max-width="300">
-            <v-img
-              class="white--text align-end"
-              height="200px"
-              :src="product.img"
-              alt="product.name"
-            ></v-img>
-
-            <v-card-subtitle class="pb-0">{{ product.name }}</v-card-subtitle>
-
-            <v-card-text class="text--primary">
-              <div>{{ product.description }}</div>
-            </v-card-text>
-
-            <v-card-actions class="d-flex justify-center">
-              <v-btn @click="removeFromCart(product)" class="mx-3" dark small color="green">
-                <v-icon>mdi-minus</v-icon>
-              </v-btn>
-              <div>{{ product.quantity }}</div>
-              <v-btn @click="addToCard(product)" class="mx-3" dark color="green">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-flex>-->
+    <TutorialList
+      v-bind:tutorials="tutorials"
+      v-on:addToCart="addToCart"
+      v-on:removeFromCart="removeFromCart"
+    />
   </v-container>
 </template>
 
 <script>
-// import ProductService from "../services/productService";
 import { deliveryTypes } from "../const/deliveryTypes";
 import { deliveryTimes } from "../const/deliveryTimes";
 import { paymentTypes } from "../const/paymentTypes";
 import TutorialList from "../components/TutorialsList";
+import TutorialDataService from "../services/TutorialDataService";
 
-// const productService = new ProductService();
 export default {
   name: "ProductsComponent",
   components: {
@@ -174,43 +146,57 @@ export default {
   },
 
   data: () => ({
-    // products: productService.getProducts(),
     times: deliveryTimes,
     paymentType: paymentTypes,
     deliveryType: deliveryTypes,
     dialog: false,
     tutorials: [],
   }),
+
   computed: {
     cart() {
       return this.tutorials.filter((tutorial) => tutorial.quantity > 0);
-      //use this also for pizza search
     },
     totalQuantity() {
       return this.tutorials.reduce(
         (total, tutorial) => total + tutorial.quantity,
         0
       );
-      // first value is 0 instead of some null or something else
     },
 
     getTotal() {
-      return this.tutorials.reduce((a, b) => a + b.price * b.tutorial, 0);
+      return this.cart.reduce((a, b) => a + b.price * b.quantity, 0);
     },
   },
   methods: {
-    addToCard(tutorial) {
-      // if i wanna search for some pizzas use .filter,, check if search content is
-      // included in pizza's name
-      const tutorialToUpdate = this.tutorials.find((p) => tutorial.id === p.id);
+    retrieveTutorials() {
+      TutorialDataService.getAll()
+        .then((response) => {
+          this.tutorials = response.data;
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+
+    addToCart(tutorial) {
+      const tutorialToUpdate = this.tutorials.find(
+        (p) => tutorial._id === p._id
+      );
       tutorialToUpdate.quantity++;
     },
     removeFromCart(tutorial) {
-      const tutorialToUpdate = this.tutorials.find((p) => tutorial.id === p.id);
+      const tutorialToUpdate = this.tutorials.find(
+        (p) => tutorial._id === p._id
+      );
       if (tutorialToUpdate.quantity) {
         tutorialToUpdate.quantity--;
       }
     },
+  },
+  mounted() {
+    this.retrieveTutorials();
   },
 };
 </script>
