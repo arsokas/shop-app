@@ -7,6 +7,8 @@ module.exports = (mongoose) => {
         description: String,
         price: Number,
         img: String,
+        quantity: Number,
+        published: Boolean,
       },
       { timestamps: true }
     )

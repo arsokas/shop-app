@@ -1,3 +1,5 @@
+export const eventBus = new Vue();
+
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";

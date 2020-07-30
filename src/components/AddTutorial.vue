@@ -3,16 +3,8 @@
     <v-form>
       <div v-if="!submitted">
         <v-text-field v-model="tutorial.name" label="Name" required id="name"></v-text-field>
-
         <v-text-field v-model="tutorial.description" label="Description" required id="description"></v-text-field>
-        <v-text-field
-          v-model="tutorial.price"
-          label="Price (DKK)"
-          type="number"
-          required
-          id="price"
-        ></v-text-field>
-
+        <v-text-field v-model="tutorial.price" label="Price (DKK)" type="number" id="price"></v-text-field>
         <v-text-field v-model="tutorial.img" label="Image Link" required id="img"></v-text-field>
 
         <v-btn color="success" class="mr-4" @click="saveTutorial">Submit</v-btn>
@@ -39,6 +31,7 @@ export default {
         description: "",
         price: "",
         img: "",
+        quantity: 0,
       },
       submitted: false,
     };
@@ -50,6 +43,7 @@ export default {
         description: this.tutorial.description,
         price: this.tutorial.price,
         img: this.tutorial.img,
+        quantity: this.tutorial.quantity,
       };
 
       TutorialDataService.create(data)

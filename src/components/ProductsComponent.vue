@@ -24,14 +24,14 @@
           </template>
           <v-list width="300px" style="position:relative;">
             <v-list-item v-if="totalQuantity == 0">Your cart is empty</v-list-item>
-            <v-list-item v-for="(product, index) in cart" :key="product.id">
+            <v-list-item v-for="tutorial in cart" :key="tutorial.id">
               <v-list-item-title>
                 <div
                   class="font-weight-black"
-                >{{ index + 1 }}. {{ product.name }} ({{ product.quantity }}x)</div>
+                >{{ index + 1 }}. {{ tutorial.name }} ({{ tutorial.quantity }}x)</div>
                 <div class="text-end">
                   Price:
-                  {{ product.price * product.quantity }} DKK
+                  {{ tutorial.price * tutorial.quantity }} DKK
                 </div>
                 <v-divider></v-divider>
               </v-list-item-title>
@@ -124,8 +124,9 @@
         </p>
       </v-col>
     </v-row>
+    <TutorialList />
 
-    <v-flex d-flex>
+    <!-- <v-flex d-flex>
       <v-layout wrap>
         <v-flex md3 v-for="product in products" :key="product.id">
           <v-card class="mb-4 mx-auto" max-width="300">
@@ -154,55 +155,60 @@
           </v-card>
         </v-flex>
       </v-layout>
-    </v-flex>
+    </v-flex>-->
   </v-container>
 </template>
 
 <script>
-import ProductService from "../services/productService";
+// import ProductService from "../services/productService";
 import { deliveryTypes } from "../const/deliveryTypes";
 import { deliveryTimes } from "../const/deliveryTimes";
 import { paymentTypes } from "../const/paymentTypes";
+import TutorialList from "../components/TutorialsList";
 
-const productService = new ProductService();
+// const productService = new ProductService();
 export default {
   name: "ProductsComponent",
+  components: {
+    TutorialList,
+  },
 
   data: () => ({
-    products: productService.getProducts(),
+    // products: productService.getProducts(),
     times: deliveryTimes,
     paymentType: paymentTypes,
     deliveryType: deliveryTypes,
     dialog: false,
+    tutorials: [],
   }),
   computed: {
     cart() {
-      return this.products.filter((product) => product.quantity > 0);
+      return this.tutorials.filter((tutorial) => tutorial.quantity > 0);
       //use this also for pizza search
     },
     totalQuantity() {
-      return this.products.reduce(
-        (total, product) => total + product.quantity,
+      return this.tutorials.reduce(
+        (total, tutorial) => total + tutorial.quantity,
         0
       );
       // first value is 0 instead of some null or something else
     },
 
     getTotal() {
-      return this.products.reduce((a, b) => a + b.price * b.quantity, 0);
+      return this.tutorials.reduce((a, b) => a + b.price * b.tutorial, 0);
     },
   },
   methods: {
-    addToCard(product) {
+    addToCard(tutorial) {
       // if i wanna search for some pizzas use .filter,, check if search content is
       // included in pizza's name
-      const productToUpdate = this.products.find((p) => product.id === p.id);
-      productToUpdate.quantity++;
+      const tutorialToUpdate = this.tutorials.find((p) => tutorial.id === p.id);
+      tutorialToUpdate.quantity++;
     },
-    removeFromCart(product) {
-      const productToUpdate = this.products.find((p) => product.id === p.id);
-      if (productToUpdate.quantity) {
-        productToUpdate.quantity--;
+    removeFromCart(tutorial) {
+      const tutorialToUpdate = this.tutorials.find((p) => tutorial.id === p.id);
+      if (tutorialToUpdate.quantity) {
+        tutorialToUpdate.quantity--;
       }
     },
   },

@@ -15,6 +15,7 @@ exports.create = (req, res) => {
     description: req.body.description,
     price: req.body.price,
     img: req.body.img,
+    quantity: req.body.quantity,
   });
 
   // Save Tutorial in the database
